@@ -1,0 +1,23 @@
+#!/opt/plan9/bin/rc
+
+# This takes a bunch of image filenames and turns them into a tarball of
+# plan9 images named (0, 1, ...).  The tarball is send to standard output.
+
+tmp=/tmp/$0
+mkdir -p $tmp
+
+p=$0
+fn err { echo $p':' $* >[1=2]; exit 1 }
+~ 0 $#* && err Nothing to compile!
+
+i=0
+for (x in $*) {
+	convert $x $tmp/$i.gif
+	gif -c $tmp/$i.gif >$tmp/$i
+	i=`{expr $i + 1}}
+
+dir=`{pwd}; cd $tmp
+rm *gif; pax -w *
+cd $dir
+
+rm -r $tmp
