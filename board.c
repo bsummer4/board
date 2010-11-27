@@ -17,6 +17,16 @@ void derror (Display * d, char* s) {
 	fprint(2, "board: fuck\n");
 	threadexits("display"); }
 
+int layout[8][8] = {
+	{ 0,  1,  2,  3,  4,  5,  6,  7},
+	{ 8,  9, 10, 11,  0,  1,  2,  3},
+	{-1, -1, -1, -1, -1, -1, -1, -1},
+	{-1, -1, -1, -1, -1, -1, -1, -1},
+	{-1, -1, -1, -1, -1, -1, -1, -1},
+	{-1, -1, -1, -1, -1, -1, -1, -1},
+	{ 0,  0,  0,  0,  0,  0,  0,  0},
+	{11, 11, 11, 11, 11, 11, 11, 11}};
+
 void grid () {
 	double dx=1/nx, dy=1/ny;
 	int color=0;
@@ -26,14 +36,18 @@ void grid () {
 			Point rect[4] = {{ii*X,jj*Y}, {(ii+dx)*X,jj*Y},
 			                 {(ii+dx)*X, (jj+dy)*Y}, {ii*X,(jj+dy)*Y}};
 			fillpoly(screen, rect, 4, 0, color?blue:red, zero); }
+	for (int ii=0; ii<nx; ii++)
+		for (int jj=0; jj<ny; jj++) {
+			int x=(X*ii)/nx, y=(Y*jj)/ny;
+			Rectangle r={(Point){2+x,2+y}, (Point){100+x,100+y}};
+			int piece = layout[jj][ii];
+			if (-1!=piece) draw(screen, r, ts[piece], ts[piece], zero); }
 	for (double ii=0; ii<1+(dx/2); ii+=dx) {
 		Point p1={ii*X,0}, p2={ii*X, Y};
 		line(screen, p1, p2, Enddisc, Enddisc, 1, display->black, zero); }
 	for (double ii=0; ii<1+(dy/2); ii+=dy) {
 		Point p1={0,ii*Y}, p2={X, ii*Y};
-		line(screen, p1, p2, Enddisc, Enddisc, 1, display->black, zero); }
-	Rectangle r = {(Point){2,2}, (Point){100,100}};
-	draw(screen, r, ts[0], display->opaque, zero); }
+		line(screen, p1, p2, Enddisc, Enddisc, 1, display->black, zero); }}
 
 void fuck() { fprint(2, "fuck"); exit(1); }
 
@@ -68,18 +82,11 @@ void threadmain (int argc, char *argv[]) {
 	drawsetdebug(10);
 	red = allocimage(display, Rect(0, 0, 1, 1), RGB24, 1, DRed);
 	blue = allocimage(display, Rect(0, 0, 1, 1), RGB24, 1, DBlue);
-
 	if (argc != 2)  {
 		fprint(2, "usage: %s %s\n", *argv, "tileset");
 		threadexits("invalid arguments"); }
 	char *dirname = argv[1];
 	tileset (dirname);
-
-	// TODO Do we actually need this?
-	if (-1 == getwindow(display, Refnone)) {
-		fprint(2, "board: can't get window: %f\n");
-		threadexits("getwindow"); }
-
-	mousectl = initmouse(nil, screen); grid();
-	for (;;) readmouse(mousectl),grid();
+	mousectl = initmouse(nil, screen);
+	for (;;) getwindow(display, Refnone),grid(),readmouse(mousectl);
 	threadexits(nil); }
