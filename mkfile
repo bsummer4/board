@@ -3,7 +3,7 @@ test:V: all
 	./board ts.chess
 
 clean:V:
-	rm -f board board.o tc.chess
+	rm -rf board board.o ts.chess
 
 ts.%: eps.%
 	mkdir -p $target; ./compile eps.$stem/* | (cd $target; pax -r)

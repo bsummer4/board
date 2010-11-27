@@ -1,0 +1,14 @@
+:TODO: Render correctly-sized images from EPS files.
+:TODO: Handle window size/position changes correctly.
+:TODO: Don't render image backgrounds.
+:TODO: Tileset config files.
+	- Board size (i.e. chess would be 8x8)
+	- Number of piece images.
+	- Colors or images for background tiles.
+	- Colors for tile borders (selected and normal)	
+
+:TODO: Special borders around selected tiles.
+:TODO: Mouse input
+:TODO: Toolbox tiles
+:TODO: Moving pieces around
+:TODO: Messages
