@@ -13,6 +13,7 @@ Image *red, *blue;
 int numtiles=-1;
 Image **ts=nil;
 
+void fuck () { fprint(2, "fuck\n"); threadexits("fuck"); }
 void derror (Display * d, char* s) {
 	fprint(2, "board: fuck\n");
 	threadexits("display"); }
@@ -49,12 +50,9 @@ void grid () {
 		Point p1={0,ii*Y}, p2={X, ii*Y};
 		line(screen, p1, p2, Enddisc, Enddisc, 1, display->black, zero); }}
 
-void fuck() { fprint(2, "fuck"); exit(1); }
-
 void tileset_ (char *buf, int dirlen, int ii) {
 	if (99<ii) goto nomore;
 	sprint(buf+dirlen, "/%d", ii);
-	warnx("tile: %d=%s", ii, buf);
 	int fd = open(buf, OREAD);
 	if (0>fd) goto nomore;
 	Image *img = readimage(display, fd, 0);
@@ -63,8 +61,8 @@ void tileset_ (char *buf, int dirlen, int ii) {
 	ts[ii] = img;
 	return;
 nomore:
-	warnx("tile %d=%s didn't make it.", ii, buf);
 	if (!ii) errx(1, "No valid images");
+	fprint(2, "hi %d\n", ii);
 	numtiles = ii;
 	ts = malloc(ii*sizeof(Image*));
 	if (!ts) err(1, "malloc"); }
@@ -79,7 +77,7 @@ void threadmain (int argc, char *argv[]) {
 	if (-1 == initdraw(derror, nil, "board")) {
 		fprint(2, "board: can't open display: %r\n");
 		threadexits("initdraw"); }
-	drawsetdebug(10);
+	drawsetdebug(1);
 	red = allocimage(display, Rect(0, 0, 1, 1), RGB24, 1, DRed);
 	blue = allocimage(display, Rect(0, 0, 1, 1), RGB24, 1, DBlue);
 	if (argc != 2)  {
@@ -88,5 +86,5 @@ void threadmain (int argc, char *argv[]) {
 	char *dirname = argv[1];
 	tileset (dirname);
 	mousectl = initmouse(nil, screen);
-	for (;;) getwindow(display, Refnone),grid(),readmouse(mousectl);
+	for (;;) getwindow(display,0),grid(),readmouse(mousectl);
 	threadexits(nil); }

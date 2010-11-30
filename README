@@ -1,10 +1,14 @@
+:TODO: Rewrite all the eps files by hand
+	- As minimal as possible
+	- All eps files should be exactly 1 inch by 1 inch.
 :TODO: Render correctly-sized images from EPS files.
+:TODO: Handle drawing and transparency correctly.
 :TODO: Handle window size/position changes correctly.
 :TODO: Tileset config files.
 	- Board size (i.e. chess would be 8x8)
 	- Number of piece images.
 	- Colors or images for background tiles.
-	- Colors for tile borders (selected and normal)	
+	- Colors for tile borders (selected and normal)
 
 :TODO: Special borders around selected tiles.
 :TODO: Mouse input
