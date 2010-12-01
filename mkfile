@@ -13,18 +13,21 @@ board: board.c
 	9l -lthread board.o -o $target
 
 %.png: %.eps
-	oflags = ('-sDEVICE=png16m' -dEPSCrop -r50x50)
+	oflags = ('-sDEVICE=pngalpha' -dEPSCrop -r100x100)
 	echo gs $gsflags $oflags '-sOutputFile='$stem.png $stem.eps 
 	gs $gsflags $oflags '-sOutputFile='$stem.png $stem.eps 
+
+%.gif: %.png
+	convert $stem.png $stem.gif
 
 ts.%: eps.%
 	rm -rf tmp
 	cp -r eps.$stem tmp
-	mk `{ls tmp/*.eps | sed 's/eps$/png/'}
+	mk `{ls tmp/*.eps | sed 's/eps$/gif/'}
 	cd tmp
 	i=0
-	for (x in `{ls *.png}) {
-		png -9 $x >$i
+	for (x in `{ls *.gif}) {
+		gif -9 $x >$i
 		i=`{expr $i + 1}}
 	rm *.*
 	cd ..

@@ -1,8 +1,17 @@
+:TODO: Fix 'png'
+	- The plan9 image converters don't support transparency except for
+	  'gif'.
+	- Ghostscript doesn't support GIF
+	- GIF sucks
+	- For now I'm converting {eps -> png -> gif -> plan9}
+	- It would be better to make 'png' support transparency so we can just
+	  do {eps -> png -> plan9}.
+
 :TODO: Rewrite all the eps files by hand
 	- As minimal as possible
 	- All eps files should be exactly 1 inch by 1 inch.
+
 :TODO: Render correctly-sized images from EPS files.
-:TODO: Handle drawing and transparency correctly.
 :TODO: Handle window size/position changes correctly.
 :TODO: Tileset config files.
 	- Board size (i.e. chess would be 8x8)
@@ -15,3 +24,8 @@
 :TODO: Toolbox tiles
 :TODO: Moving pieces around
 :TODO: Messages
+- How do we know when the window is resized?
+	- I.e. how do we know when to call getwindow()?
+	- The event package
+- Do I need to call flushimage()?
+
