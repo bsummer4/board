@@ -1,4 +1,4 @@
-gsflags = -dSAFER -dBATCH -dNOPAUSE
+gsflags = -dSAFER -dBATCH -dNOPAUSE -q
 MKSHELL = /opt/plan9/bin/rc
 
 all:V: board ts.chess
