@@ -6,7 +6,7 @@
 #include <err.h>
 
 Mousectl *mousectl;
-const int X=400, Y=400;
+int grid = 50;
 double nx=8, ny=8;
 Point zero={0,0};
 Image *red, *blue, *green;
@@ -30,11 +30,11 @@ int layout[8][8] = {
 void drawsquare (int x, int y) {
 	int color = (x+y)%2;
 	int sel = selected.x==x && selected.y==y;
-#	define XX(i) ((i)*X)/nx
-#	define YY(i) ((i)*Y)/ny
+#	define XX(i) ((i)*grid)
+#	define YY(i) ((i)*grid)
 	Point rect[5] = {
-		{XX(x), YY(y)},         {XX(x+1)+1, YY(y)},
-		{XX(x+1)+1, YY(y+1)+1}, {XX(x), YY(y+1)+1},
+		{XX(x), YY(y)},     {XX(x+1), YY(y)},
+		{XX(x+1), YY(y+1)}, {XX(x), YY(y+1)},
       {XX(x), YY(y)}};
 	fillpoly(screen, rect, 4, 0, color?blue:red, zero);
 	poly(screen, rect, 5, 0, Enddisc, Enddisc, sel?green:d->black, zero);
